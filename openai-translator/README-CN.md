@@ -102,6 +102,29 @@ python ai_translator/main.py --model_type GLMModel --glm_model_url $GLM_MODEL_UR
 
 该项目采用 GPL-3.0 许可证。有关详细信息，请查看 [LICENSE](LICENSE) 文件。
 
+## FAQ
+
+### 依赖冲突：langchain-openai 0.1.7 requires openai<2.0.0,>=1.24.0, but you have openai 1.14.2 which is incompatible.
+
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+langchain-openai 0.1.7 requires openai<2.0.0,>=1.24.0, but you have openai 1.14.2 which is incompatible.
+Successfully installed openai-1.14.2
+
+```bash
+pip install --upgrade openai
+
+pip show openai
+```
+Name: openai
+Version: 1.65.1
+Summary: The official Python library for the openai API
+Home-page: https://github.com/openai/openai-python
+Author: 
+Author-email: OpenAI <support@openai.com>
+License-Expression: Apache-2.0
+Location: /home/fuyi/miniconda3/envs/langchain/lib/python3.10/site-packages
+Requires: anyio, distro, httpx, jiter, pydantic, sniffio, tqdm, typing-extensions
+Required-by: langchain-openai
 
 
 
