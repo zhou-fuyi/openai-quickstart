@@ -56,17 +56,68 @@ mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm -rf ~/miniconda3/miniconda.sh
+echo 'export PATH=~/miniconda3/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+conda init
+source ~/.bashrc
+```
+> bash ~/miniconda3/miniconda.sh
+> 运行 miniconda.sh 安装脚本，该脚本位于 ~/miniconda3/ 目录下。
+> 
+> -b （batch mode）
+> 静默模式，即不会弹出交互式提示，直接按照默认配置安装或更新 Miniconda。
+>
+> -u （update mode）
+> 更新模式，如果 ~/miniconda3/ 目录已存在，则进行更新，而不是全新安装。
+> 
+> -p ~/miniconda3 （prefix）
+> 指定安装路径，将 Miniconda 安装或更新到 ~/miniconda3 目录。
 
-~/miniconda3/bin/conda init bash  # 如果你使用的是 bash
+> conda命令找不到：如果安装完成后 conda 命令找不到，可能是因为 conda 可执行文件所在的路径没有添加到 PATH 变量中
+> 临时解决方法：source ~/miniconda3/bin/activate
+
+> 永久解决方法（添加到 PATH）：
+> echo 'export PATH=~/miniconda3/bin:$PATH' >> ~/.bashrc
+> source ~/.bashrc
+
+> 如果 conda 仍然不可用，可以运行以下命令重新初始化：
+> ~/miniconda3/bin/conda init bash  # 如果你使用的是 bash
+> source ~/.bashrc  # 或者 source ~/.bash_profile
+
+> conda --version
+---
+
+Conda 的 base 环境 是 Miniconda/Anaconda 安装时默认创建的环境，它在终端启动时会自动激活
+
+如果你不想每次打开终端都自动进入 base 环境，可以关闭自动激活，执行：
+
+```bash
+conda config --set auto_activate_base false
+source ~/.bashrc  # 或者 source ~/.zshrc（macOS 使用 Zsh 时）
+
+# 这样，下次打开终端时就不会自动激活 base，你需要手动运行： -> 来进入 base 环境。
+conda activate base
+
+# 如果以后想恢复 base 环境的自动激活，可以执行：
+
+conda config --set auto_activate_base true
+source ~/.bashrc  # 或者 source ~/.zshrc（macOS 使用 Zsh 时）
 ```
 
 安装完成后，建议新建一个 Python 虚拟环境，命名为 `langchain`。
 
 ```shell
+# -n -> --name
 conda create -n langchain python=3.10
 
 # 激活环境
 conda activate langchain 
+
+# 退出环境
+conda deactivate
+
+# 删除环境
+conda remove -n langchain --all
 ```
 
 之后每次使用需要激活此环境。
@@ -84,6 +135,8 @@ pip install -r requirements.txt
 
 ```shell
 export OPENAI_API_KEY="xxxx"
+echo 'export OPENAI_API_KEY=xxx' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ### 安装和配置 Jupyter Lab
@@ -91,6 +144,10 @@ export OPENAI_API_KEY="xxxx"
 上述开发环境安装完成后，使用 Miniconda 安装 Jupyter Lab：
 
 ```shell
+# -c（channel）参数指定使用 conda-forge 频道来安装软件
+# conda-forge 是 Conda 社区维护的一个高质量开源软件包仓库，其中的软件通常比默认的 conda 频道更新、更优化。
+
+# JupyterLab，是 Jupyter Notebook 的增强版，提供更现代化的界面和功能。
 conda install -c conda-forge jupyterlab
 ```
 
@@ -99,6 +156,7 @@ conda install -c conda-forge jupyterlab
 ```shell
 # 生成 Jupyter Lab 配置文件，
 jupyter lab --generate-config
+# Writing default config to: /home/xx_user_name/.jupyter/jupyter_lab_config.py
 ```
 
 打开上面执行输出的`jupyter_lab_config.py`配置文件后，修改以下配置项：
